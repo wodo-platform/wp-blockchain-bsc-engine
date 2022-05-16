@@ -1,25 +1,20 @@
+web3j.client-address: https://speedy-nodes-nyc.moralis.io/b961f8da4d304fd07fa278a5/bsc/testnet
+moralis.ws-address: wss://speedy-nodes-nyc.moralis.io/b961f8da4d304fd07fa278a5/bsc/testnet/ws
 spring:
   application.name: wp-blockchain-bsc-engine
   profiles.active: default
----
-web3j.client-address: https://speedy-nodes-nyc.moralis.io/b961f8da4d304fd07fa278a5/bsc/testnet
-web3j.chainId: 97
-spring:
-  config.activate.on-profile: default
-  datasource:
-    url: jdbc:mysql://localhost:3306/wallet?characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=True
-    username: root
-    password: kafamysql
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    poolName: wallet-service-java-sdk-dbconnectionpool
-  jpa:
-    database: MYSQL
-    show-sql: false
-    hibernate:
-      ddl-auto: none
-server:
-  port: 8081
+  r2dbc.url: r2dbc:mysql://localhost:3306/bsc_engine
+  r2dbc.username:  root
+  r2dbc.password:  123456
+  r2dbc.pool.enabled:  true
+  r2dbc.pool.initial-size: 50
+  r2dbc.pool.max-size: 100
 logging:
   file.name: ${logging.file.path}wp-blockchain-bsc-engine.log
   file.path: logs/
   config: classpath:logback.xml
+management:
+  endpoints:
+    enabled-by-default: false
+
+

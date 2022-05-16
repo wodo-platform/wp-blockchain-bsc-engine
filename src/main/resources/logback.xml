@@ -1,7 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
-    <logger name="org.springframework" level="INFO"/>
-    <logger name="org.hibernate" level="INFO"/>
-    <logger name="io.wodo" level="INFO"/>
+
+    <appender name="ASYNC_CONSOLE"
+              class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>20
+        </discardingThreshold> <!-- default 20, means drop lower event when has 20% capacity remaining -->
+        <appender-ref ref="CONSOLE"/>
+        <queueSize>256</queueSize> <!-- default 256 -->
+        <includeCallerData>false</includeCallerData><!-- default false -->
+        <neverBlock>true</neverBlock><!-- default false, set to true to cause the
+            Appender not block the application and just drop the messages -->
+    </appender>
+
+    <appender name="ASYNC_FILE"
+              class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>20
+        </discardingThreshold> <!-- default 20, means drop lower event when has 20% capacity remaining -->
+        <appender-ref ref="FILE"/>
+        <queueSize>256</queueSize> <!-- default 256 -->
+        <includeCallerData>false</includeCallerData><!-- default false -->
+        <neverBlock>false</neverBlock><!-- default false, set to true to cause
+            the Appender not block the application and just drop the messages -->
+    </appender>
+
+    <logger name="org.springframework" level="INFO" additivity="false">
+        <appender-ref ref="ASYNC_CONSOLE"/>
+        <appender-ref ref="ASYNC_FILE"/>
+
+    </logger>
+
+    <logger name="io.wodo" level="INFO" additivity="false">
+        <appender-ref ref="ASYNC_CONSOLE"/>
+        <appender-ref ref="ASYNC_FILE"/>
+    </logger>
+
+    <logger name="dev.miku.r2dbc" level="ERROR" additivity="false">
+        <appender-ref ref="ASYNC_CONSOLE"/>
+        <appender-ref ref="ASYNC_FILE"/>
+
+    </logger>
 </configuration>
